@@ -25,4 +25,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register" />
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:text="Already have an account? Login"
+        android:paddingTop="8dp"
+        android:gravity="center"
+        android:clickable="true"
+        android:textColor="@android:color/holo_blue_light" />
 </LinearLayout>

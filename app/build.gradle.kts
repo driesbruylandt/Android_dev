@@ -69,6 +69,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
     implementation(libs.androidx.navigation.ui.ktx.v273)
-
-
+    implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
 }

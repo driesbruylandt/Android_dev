@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.driesbruylandt.villageclean.R
+import androidx.navigation.fragment.findNavController
 
 class RegisterFragment : Fragment() {
 
@@ -25,9 +27,11 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
+
         val btnRegister: Button = view.findViewById(R.id.btnRegister)
         val etRegisterEmail: EditText = view.findViewById(R.id.etRegisterEmail)
         val etRegisterPassword: EditText = view.findViewById(R.id.etRegisterPassword)
+        val tvLogin: TextView = view.findViewById(R.id.tvLogin)
 
         btnRegister.setOnClickListener {
             val email = etRegisterEmail.text.toString()
@@ -38,6 +42,10 @@ class RegisterFragment : Fragment() {
             } else {
                 Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        tvLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
     }
 
