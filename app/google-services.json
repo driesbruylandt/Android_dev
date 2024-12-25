@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "433441273335",
+    "project_id": "villageclean-dc2a9",
+    "storage_bucket": "villageclean-dc2a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433441273335:android:9b3755a79ee91c44e96af2",
+        "android_client_info": {
+          "package_name": "com.driesbruylandt.villageclean"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA06Xchvqbhu82zbq6Ej5I3BbNCVKbNvbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
