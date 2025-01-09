@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- User Email Dropdown (Always Visible) -->
+    <LinearLayout
+        android:id="@+id/userEmailContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Email"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:drawableEnd="@drawable/ic_dropdown"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/emptyStateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="56dp">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_empty_state"
+            android:contentDescription="Empty state icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start door je aan te sluiten bij een community"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:paddingTop="16dp" />
+
+        <Button
+            android:id="@+id/joinCommunityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoek naar community"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+
+    <!-- Dashboard -->
+    <LinearLayout
+        android:id="@+id/dashboardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_marginTop="56dp">
+
+        <!-- Navigation Buttons -->
+        <Button
+            android:id="@+id/mapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/communityButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Community"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+</FrameLayout>

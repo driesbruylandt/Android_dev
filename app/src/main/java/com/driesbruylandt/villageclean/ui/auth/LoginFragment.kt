@@ -76,7 +76,7 @@ class LoginFragment : Fragment() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show()
-                    // Navigate to main screen
+                    findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
                 } else {
                     Toast.makeText(context, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }

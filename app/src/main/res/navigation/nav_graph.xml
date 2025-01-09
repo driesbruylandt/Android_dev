@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
     </fragment>
 
     <fragment
@@ -21,4 +24,44 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.driesbruylandt.villageclean.ui.dashboard.DashboardFragment"
+        android:label="Dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_joinCommunityFragment"
+            app:destination="@id/joinCommunityFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_myCommunityFragment"
+            app:destination="@id/myCommunityFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_dashboard_to_profile"-->
+<!--            app:destination="@id/profileFragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_dashboard_to_map"-->
+<!--            app:destination="@id/mapFragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/joinCommunityFragment"
+        android:name="com.driesbruylandt.villageclean.ui.community.JoinCommunityFragment"
+        android:label="Join a Community">
+        <action
+            android:id="@+id/action_joinCommunityFragment_to_addCommunityFragment"
+            app:destination="@id/addCommunityFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCommunityFragment"
+        android:name="com.driesbruylandt.villageclean.ui.community.AddCommunityFragment"
+        android:label="Add Community" />
+
+    <fragment
+        android:id="@+id/myCommunityFragment"
+        android:name="com.driesbruylandt.villageclean.ui.community.MyCommunityFragment"
+        android:label="My Community" />
 </navigation>

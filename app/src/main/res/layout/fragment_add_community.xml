@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <AutoCompleteTextView
+        android:id="@+id/selectMunicipalityInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Municipality"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/communityNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Community Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/maxMembersInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max Members"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/createCommunityButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Community" />
+</LinearLayout>

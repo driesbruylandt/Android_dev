@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Search Bar -->
+    <AutoCompleteTextView
+        android:id="@+id/searchMunicipalityInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Municipality"
+        android:inputType="text" />
+
+    <!-- RecyclerView for Communities -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/communitiesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
+
+    <!-- Button to Add a New Community -->
+    <Button
+        android:id="@+id/addCommunityButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voeg een nieuwe community toe"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

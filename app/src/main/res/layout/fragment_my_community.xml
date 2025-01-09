@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Community Information -->
+    <TextView
+        android:id="@+id/communityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Community Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/communityMunicipality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Municipality"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/communityMembersLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Members:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Members List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/communityMembersRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Admin Options -->
+    <LinearLayout
+        android:id="@+id/adminOptionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/removeMemberButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Selected Members"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/deleteCommunityButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Community"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>
