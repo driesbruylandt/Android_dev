@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import com.driesbruylandt.villageclean.R
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.driesbruylandt.villageclean.databinding.FragmentJoinCommunityBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.navigation.fragment.findNavController
 import com.driesbruylandt.villageclean.Models.Community
+import com.google.firebase.firestore.FieldValue
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,18 +101,28 @@ class JoinCommunityFragment : Fragment() {
             .whereEqualTo("municipality", municipality)
             .get()
             .addOnSuccessListener { documents ->
-                val communities = documents.map { it.toObject(Community::class.java) }
+                val communities = documents.map { document ->
+                    val community = document.toObject(Community::class.java)
+                    community.id = document.id // Set the document ID
+                    community
+                }
                 adapter.submitList(communities)
+                for (community in communities) {
+                    Log.d("JoinCommunityFragment", "Community: ${community.name}, Municipality: ${community.municipality}, ID: ${community.id}")
+                }
             }
     }
 
     private fun joinCommunity(community: Community) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
-            firestore.collection("users").document(userId)
-                .update("community", community.name)
+            firestore.collection("communities").document(community.id)
+                .update("members", FieldValue.arrayUnion(userId))
                 .addOnSuccessListener {
                     findNavController().popBackStack() // Return to dashboard
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), "Failed to update members: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }

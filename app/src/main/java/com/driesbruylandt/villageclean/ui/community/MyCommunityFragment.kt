@@ -1,17 +1,20 @@
 package com.driesbruylandt.villageclean.ui.community
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.driesbruylandt.villageclean.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.driesbruylandt.villageclean.Models.Community
 import com.driesbruylandt.villageclean.databinding.FragmentMyCommunityBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldPath
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,28 +68,62 @@ class MyCommunityFragment : Fragment() {
     }
 
     private fun removeSelectedMembers() {
-        // Logic to remove selected members from the community
-        Toast.makeText(requireContext(), "Members removed", Toast.LENGTH_SHORT).show()
+        val adapter = binding.communityMembersRecyclerView.adapter as CommunityMembersAdapter
+        val selectedMembers = adapter.getSelectedMembers()
+        Log.d("MyCommunityFragment", "Remove members: $selectedMembers, Community id: ${community.id}")
+
+        if (selectedMembers.contains(community.admin)) {
+            Toast.makeText(requireContext(), "Admin cannot remove themselves from the community", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (selectedMembers.isNotEmpty()) {
+            val updatedMembers = community.members.toMutableList().apply {
+                removeAll(selectedMembers)
+            }
+
+            firestore.collection("communities").document(community.id)
+                .update("members", updatedMembers)
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Members removed", Toast.LENGTH_SHORT).show()
+                    community.members = updatedMembers
+                    fetchCommunityData()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Failed to remove members", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(requireContext(), "No members selected", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun deleteCommunity() {
-        firestore.collection("communities").document(community.id)
-            .delete()
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Community deleted", Toast.LENGTH_SHORT).show()
-                requireActivity().onBackPressed()
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirm Deletion")
+            .setMessage("Are you sure you want to delete this community?")
+            .setPositiveButton("Yes") { dialog, which ->
+                firestore.collection("communities").document(community.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "Community deleted", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressed()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Failed to delete community", Toast.LENGTH_SHORT).show()
+                    }
             }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Failed to delete community", Toast.LENGTH_SHORT).show()
+            .setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
             }
+            .show()
     }
 
-    private fun populateUI() {
+    private fun populateUI(memberData: List<Pair<String, String>>) {
         binding.communityName.text = community.name
         binding.communityMunicipality.text = community.municipality
 
-        val adapter = CommunityMembersAdapter(community.members) { selectedMember ->
-            // Handle member selection logic (for remove functionality)
+        val adapter = CommunityMembersAdapter(memberData) { selectedMember ->
+            Log.d("MyCommunityFragment", "Selected member: $selectedMember")
         }
         binding.communityMembersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.communityMembersRecyclerView.adapter = adapter
@@ -106,8 +143,29 @@ class MyCommunityFragment : Fragment() {
                     return@addOnSuccessListener
                 }
 
-                community = documents.first().toObject(Community::class.java)
-                populateUI()
+                val document = documents.first()
+                community = document.toObject(Community::class.java).apply {
+                    id = document.id  // Set the document ID
+                }
+                Log.d("MyCommunityFragment", "Community: ${community.name}, ID: ${community.id}, Members: ${community.members}")
+                fetchMemberNames(community.members)
+            }
+            .addOnFailureListener { e ->
+                Log.e("MyCommunityFragment", "Error fetching community data: ${e.message}", e)
+                Toast.makeText(requireContext(), "Error fetching community data", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun fetchMemberNames(memberIds: List<String>) {
+        firestore.collection("users")
+            .whereIn(FieldPath.documentId(), memberIds)  // Querying by document IDs
+            .get()
+            .addOnSuccessListener { documents ->
+                val memberData = documents.map { it.id to (it.getString("email") ?: "Unknown") }
+                populateUI(memberData)
+            }
+            .addOnFailureListener { e ->
+                Log.e("MyCommunityFragment", "Error fetching member names: ${e.message}", e)
             }
     }
 

@@ -54,6 +54,9 @@ class DashboardFragment : Fragment() {
             navigateToMap()
         }
 
+        binding.mapButton.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_mapFragment)
+        }
         binding.communityButton.setOnClickListener{
             findNavController().navigate(R.id.action_dashboardFragment_to_myCommunityFragment)
         }
@@ -62,27 +65,55 @@ class DashboardFragment : Fragment() {
         }
     }
 
+//    private fun checkUserCommunity(userId: String) {
+//        val firestore = FirebaseFirestore.getInstance()
+//
+//        firestore.collection("users").document(userId).get()
+//            .addOnSuccessListener { document ->
+//                if (document != null && document.exists()) {
+//                    val community = document.getString("community")
+//                    if (community.isNullOrEmpty()) {
+//                        binding.emptyStateContainer.visibility = View.VISIBLE
+//                        binding.dashboardContainer.visibility = View.GONE
+//                    } else {
+//                        binding.emptyStateContainer.visibility = View.GONE
+//                        binding.dashboardContainer.visibility = View.VISIBLE
+//                    }
+//                } else {
+//                    Toast.makeText(context, "User data not found", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                e.printStackTrace()
+//                Toast.makeText(context, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//    }
+
     private fun checkUserCommunity(userId: String) {
         val firestore = FirebaseFirestore.getInstance()
 
-        firestore.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val community = document.getString("community")
-                    if (community.isNullOrEmpty()) {
-                        binding.emptyStateContainer.visibility = View.VISIBLE
-                        binding.dashboardContainer.visibility = View.GONE
-                    } else {
-                        binding.emptyStateContainer.visibility = View.GONE
-                        binding.dashboardContainer.visibility = View.VISIBLE
-                    }
+        // Query the "communities" collection where the user is a member
+        firestore.collection("communities")
+            .whereArrayContains("members", userId)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    // If no community is found, show the empty state UI
+                    binding.emptyStateContainer.visibility = View.VISIBLE
+                    binding.dashboardContainer.visibility = View.GONE
                 } else {
-                    Toast.makeText(context, "User data not found", Toast.LENGTH_SHORT).show()
+                    // If a community is found, populate the UI
+                    binding.emptyStateContainer.visibility = View.GONE
+                    binding.dashboardContainer.visibility = View.VISIBLE
                 }
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
-                Toast.makeText(context, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Error fetching community data: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 

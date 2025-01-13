@@ -94,22 +94,14 @@ class AddCommunityFragment : Fragment() {
             admin = userId
         )
 
-        firestore.collection("users").document(userId)
-            .update("community", communityName)
+        firestore.collection("communities")
+            .add(community)
             .addOnSuccessListener {
-                // Save the community to Firestore
-                firestore.collection("communities")
-                    .add(community)
-                    .addOnSuccessListener {
-                        // Navigate back to JoinCommunityFragment or show success message
-                        findNavController().popBackStack()
-                    }
-                    .addOnFailureListener {
-                        // Handle error (e.g., show a Toast)
-                    }
+                // Navigate back to JoinCommunityFragment or show success message
+                findNavController().popBackStack()
             }
             .addOnFailureListener {
-                // Handle error
+                // Handle error (e.g., show a Toast)
             }
     }
 

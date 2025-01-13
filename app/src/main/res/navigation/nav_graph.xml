@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_myCommunityFragment"
             app:destination="@id/myCommunityFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
 <!--        <action-->
 <!--            android:id="@+id/action_dashboard_to_profile"-->
 <!--            app:destination="@id/profileFragment" />-->
@@ -64,4 +67,22 @@
         android:id="@+id/myCommunityFragment"
         android:name="com.driesbruylandt.villageclean.ui.community.MyCommunityFragment"
         android:label="My Community" />
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.driesbruylandt.villageclean.ui.map.MapFragment"
+        android:label="Map">
+        <action
+            android:id="@+id/action_mapFragment_to_streetInfoFragment"
+            app:destination="@id/streetInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/streetInfoFragment"
+        android:name="com.driesbruylandt.villageclean.ui.map.StreetInfoFragment"
+        android:label="Street Info">
+        <argument
+            android:name="streetName"
+            app:argType="string" />
+    </fragment>
 </navigation>
