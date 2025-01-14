@@ -6,15 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.driesbruylandt.villageclean.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.driesbruylandt.villageclean.Models.Community
 import com.driesbruylandt.villageclean.databinding.FragmentMyCommunityBinding
+import com.driesbruylandt.villageclean.ui.global.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldPath
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,8 @@ class MyCommunityFragment : Fragment() {
     private val firestore = FirebaseFirestore.getInstance()
     private lateinit var community: Community
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+    private lateinit var adminButton: Button
+    private lateinit var leaveCommunityButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +53,9 @@ class MyCommunityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentMyCommunityBinding.inflate(inflater, container, false)
+        adminButton = binding.root.findViewById(R.id.admin_button)
+        leaveCommunityButton = binding.root.findViewById(R.id.leaveCommunityButton)
         return binding.root
     }
 
@@ -64,6 +70,10 @@ class MyCommunityFragment : Fragment() {
 
         binding.deleteCommunityButton.setOnClickListener {
             deleteCommunity()
+        }
+
+        binding.adminButton.setOnClickListener {
+            findNavController().navigate(R.id.action_myCommunityFragment_to_adminFragment)
         }
     }
 
@@ -130,6 +140,7 @@ class MyCommunityFragment : Fragment() {
 
         if (community.admin == currentUserId) {
             binding.adminOptionsContainer.visibility = View.VISIBLE
+            leaveCommunityButton.visibility = View.GONE
         }
     }
 
@@ -167,6 +178,31 @@ class MyCommunityFragment : Fragment() {
             .addOnFailureListener { e ->
                 Log.e("MyCommunityFragment", "Error fetching member names: ${e.message}", e)
             }
+    }
+
+    private fun leaveCommunity() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirm Leaving")
+            .setMessage("Are you sure you want to leave this community?")
+            .setPositiveButton("Yes") { dialog, which ->
+                val updatedMembers = community.members.toMutableList().apply {
+                    remove(currentUserId)
+                }
+
+                firestore.collection("communities").document(community.id)
+                    .update("members", updatedMembers)
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "You have left the community", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressed()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Failed to leave community", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onDestroyView() {

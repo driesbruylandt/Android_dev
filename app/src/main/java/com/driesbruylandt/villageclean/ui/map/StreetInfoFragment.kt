@@ -8,11 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.driesbruylandt.villageclean.R
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,22 +65,71 @@ class StreetInfoFragment : Fragment() {
         }
 
         val streetInfoTextView: TextView = view.findViewById(R.id.street_info_text_view)
-        fetchStreetInfo(streetInfoTextView)
+        val lastCleanedTextView: TextView = view.findViewById(R.id.last_cleaned_text_view)
+        val updateLastCleanedButton: Button = view.findViewById(R.id.update_last_cleaned_button)
+
+        fetchStreetInfo(streetInfoTextView, lastCleanedTextView)
+
+        updateLastCleanedButton.setOnClickListener {
+            createCleaningRequest()
+        }
     }
 
-    private fun fetchStreetInfo(streetInfoTextView: TextView) {
+    private fun fetchStreetInfo(streetInfoTextView: TextView, lastCleanedTextView: TextView) {
         firestore.collection("municipalities").document(municipality)
             .collection("streets").document(streetName).get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
                     val streetInfo = document.getString("name") ?: "Street information not found"
+                    val lastCleanedTimestamp = document.getTimestamp("lastCleaned")
+                    val lastCleaned = lastCleanedTimestamp?.toDate()?.let {
+                        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(it)
+                    } ?: "Not available"
                     streetInfoTextView.text = streetInfo
+                    lastCleanedTextView.text = lastCleaned
                 } else {
                     streetInfoTextView.text = "Street information not found"
+                    lastCleanedTextView.text = "Not available"
                 }
             }
             .addOnFailureListener { e ->
                 streetInfoTextView.text = "Error fetching street information: ${e.message}"
+            }
+    }
+
+    private fun createCleaningRequest() {
+        val currentDate = Timestamp.now()
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        firestore.collection("communities")
+            .whereArrayContains("members", FirebaseAuth.getInstance().currentUser?.uid ?: "")
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Toast.makeText(context, "No community found", Toast.LENGTH_SHORT).show()
+                } else {
+                    val community = documents.first()
+                    val admin = community.getString("admin") ?: ""
+                    val cleaningRequest = hashMapOf(
+                        "streetName" to streetName,
+                        "municipality" to municipality,
+                        "requestedAt" to currentDate,
+                        "status" to "pending",
+                        "adminId" to admin,
+                        "userId" to currentUserId
+                    )
+
+                    firestore.collection("cleaningRequests")
+                        .add(cleaningRequest)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Cleaning request created", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Failed to create cleaning request: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Failed to fetch community: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

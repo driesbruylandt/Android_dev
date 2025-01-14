@@ -1,23 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.map.StreetInfoFragment">
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/street_info_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Street Info"
+        android:textSize="18sp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/last_cleaned_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Cleaned:"
+        android:textSize="16sp"
+        android:paddingTop="16dp" />
+
+    <TextView
+        android:id="@+id/last_cleaned_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not available"
+        android:textSize="16sp"
+        android:paddingBottom="16dp" />
+
+    <Button
+        android:id="@+id/update_last_cleaned_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I cleaned this street" />
 
     <Button
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Back" />
-
-    <TextView
-        android:id="@+id/street_info_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Street Info" />
-
+        android:text="Back"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

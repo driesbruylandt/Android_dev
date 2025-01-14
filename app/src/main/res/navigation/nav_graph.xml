@@ -66,7 +66,11 @@
     <fragment
         android:id="@+id/myCommunityFragment"
         android:name="com.driesbruylandt.villageclean.ui.community.MyCommunityFragment"
-        android:label="My Community" />
+        android:label="My Community">
+        <action
+            android:id="@+id/action_myCommunityFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/mapFragment"
@@ -85,4 +89,9 @@
             android:name="streetName"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.driesbruylandt.villageclean.ui.admin.AdminFragment"
+        android:label="Admin" />
 </navigation>
