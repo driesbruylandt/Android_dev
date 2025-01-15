@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.driesbruylandt.villageclean.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.driesbruylandt.villageclean.Models.Community
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldPath
 import androidx.navigation.fragment.findNavController
+import androidx.appcompat.widget.Toolbar
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

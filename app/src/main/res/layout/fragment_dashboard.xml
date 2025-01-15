@@ -74,21 +74,21 @@
             android:id="@+id/mapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Map"
+            android:text="@string/nav_map"
             android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/profileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="@string/nav_profile"
             android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/communityButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Community"
+            android:text="@string/nav_community"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 

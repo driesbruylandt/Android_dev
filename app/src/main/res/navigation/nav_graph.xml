@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.driesbruylandt.villageclean.ui.auth.LoginFragment"
-        android:label="LoginFragment">
+        android:label="Login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.driesbruylandt.villageclean.ui.auth.RegisterFragment"
-        android:label="RegisterFragment">
+        android:label="Register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

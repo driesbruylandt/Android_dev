@@ -20,6 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,6 +75,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        loadMapAsync()
+    }
+
+    private fun loadMapAsync() {
         map.uiSettings.isZoomControlsEnabled = true
         map.setOnPolygonClickListener { polygon ->
             val streetName = polygon.tag as String
@@ -84,10 +93,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun getUserCommunity() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            firestore.collection("communities")
-                .whereArrayContains("members", user.uid)
-                .get()
-                .addOnSuccessListener { documents ->
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val documents = withContext(Dispatchers.IO) {
+                        firestore.collection("communities")
+                            .whereArrayContains("members", user.uid)
+                            .get()
+                            .await()
+                    }
                     if (documents.isEmpty) {
                         Toast.makeText(context, "No community found", Toast.LENGTH_SHORT).show()
                     } else {
@@ -97,8 +110,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             fetchMunicipalityCoordinates(municipality)
                         }
                     }
-                }
-                .addOnFailureListener { e ->
+                } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(
                         requireContext(),
@@ -106,14 +118,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
         } else {
             Toast.makeText(context, "User not authenticated", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun fetchMunicipalityCoordinates(municipality: String) {
-        firestore.collection("municipalities").document(municipality).get()
-            .addOnSuccessListener { document ->
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val document = withContext(Dispatchers.IO) {
+                    firestore.collection("municipalities").document(municipality).get().await()
+                }
                 if (document != null && document.exists()) {
                     val geoPoint = document.getGeoPoint("coordinates")
                     if (geoPoint != null) {
@@ -124,8 +140,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 } else {
                     Toast.makeText(context, "Municipality data not found", Toast.LENGTH_SHORT).show()
                 }
-            }
-            .addOnFailureListener { e ->
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(
                     requireContext(),
@@ -133,12 +148,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
     }
 
     private fun loadPolygons(municipality: String) {
-        firestore.collection("municipalities").document(municipality).collection("streets")
-            .get()
-            .addOnSuccessListener { documents ->
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val documents = withContext(Dispatchers.IO) {
+                    firestore.collection("municipalities").document(municipality).collection("streets")
+                        .get()
+                        .await()
+                }
                 for (document in documents) {
                     val polygonPoints = document.get("polygon") as List<GeoPoint>
                     val latLngList = polygonPoints.map { LatLng(it.latitude, it.longitude) }
@@ -148,10 +168,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         .clickable(true)
                     map.addPolygon(polygonOptions).tag = document.getString("name")
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    requireContext(),
+                    "Error loading polygons: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            .addOnFailureListener { e ->
-                // Handle the error
-            }
+        }
     }
 
     companion object {

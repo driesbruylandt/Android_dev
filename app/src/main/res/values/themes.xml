@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.VillageClean" parent="Theme.MaterialComponents.Light.DarkActionBar"/>
+    <style name="Theme.VillageClean" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Primary branding color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Dark variant of the primary branding color. -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- Bright complementary color. -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Disable the default action bar -->
+        <item name="windowActionBar">false</item>
+        <!-- Enable the toolbar as the action bar -->
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

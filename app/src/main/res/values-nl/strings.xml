@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dorp Schoon</string>
+    <string name="back_button">Terug</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_maps_api_key">AIzaSyDmPLn3HwyN3PWJkO4RUsLMlhhD51m4IQs</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="nav_community">Gemeenschap</string>
+    <string name="nav_map">Kaart</string>
+    <string name="nav_profile">Profiel</string>
+    <string name="membersListTitle">Leden</string>
+    <string name="points">Punten</string>
+    <string name="leave_community">Verlaat gemeenschap</string>
+
+</resources>

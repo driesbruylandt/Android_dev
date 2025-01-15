@@ -1,83 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".ui.MyCommunityFragment">
 
-    <!-- Community Information -->
-    <TextView
-        android:id="@+id/communityName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Community Name"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/communityMunicipality"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Municipality"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/communityMembersLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Members:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Members List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/communityMembersRecyclerView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
 
-    <!-- Admin Options -->
-    <LinearLayout
-        android:id="@+id/adminOptionsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginTop="16dp">
-
-        <Button
-            android:id="@+id/admin_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go to Requests"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/removeMemberButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remove Selected Members"
-            android:layout_marginBottom="8dp" />
+            <!-- Community Information -->
+            <TextView
+                android:id="@+id/communityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Community Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-        <Button
-            android:id="@+id/deleteCommunityButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Community"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/communityMunicipality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Municipality"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
 
-    <!-- Leave Community Button for Non-Admin Users -->
-    <Button
-        android:id="@+id/leaveCommunityButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Leave Community"
-        android:layout_marginTop="16dp" />
+            <TextView
+                android:id="@+id/communityMembersLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/membersListTitle"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Members List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/communityMembersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Admin Options -->
+            <LinearLayout
+                android:id="@+id/adminOptionsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/admin_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Go to Requests"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/removeMemberButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Remove Selected Members"
+                    android:layout_marginBottom="8dp" />
+
+                <Button
+                    android:id="@+id/deleteCommunityButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delete Community"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <!-- Leave Community Button for Non-Admin Users -->
+            <Button
+                android:id="@+id/leaveCommunityButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/leave_community"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

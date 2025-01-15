@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Member Points"
+        android:text="@string/points"
         android:textSize="16sp" />
     <CheckBox
         android:id="@+id/memberCheckBox"
