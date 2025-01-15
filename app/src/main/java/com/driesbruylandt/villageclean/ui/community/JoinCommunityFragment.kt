@@ -39,7 +39,7 @@ class JoinCommunityFragment : Fragment() {
     private lateinit var adapter: CommunitiesAdapter
 
     private val flemishMunicipalities = listOf(
-        "Antwerp", "Ghent", "Bruges", "Leuven", "Hasselt", "Mechelen", "Kortrijk", "Sint-Niklaas", "Genk", "Turnhout"
+        "Antwerp", "Ghent", "Bruges", "Leuven", "Hasselt", "Mechelen", "Kortrijk", "Sint-Niklaas", "Genk", "Turnhout", "Melsbroek"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

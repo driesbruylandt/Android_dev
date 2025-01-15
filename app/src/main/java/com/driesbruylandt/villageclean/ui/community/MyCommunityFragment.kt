@@ -13,7 +13,6 @@ import com.driesbruylandt.villageclean.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.driesbruylandt.villageclean.Models.Community
 import com.driesbruylandt.villageclean.databinding.FragmentMyCommunityBinding
-import com.driesbruylandt.villageclean.ui.global.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldPath
@@ -40,6 +39,7 @@ class MyCommunityFragment : Fragment() {
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     private lateinit var adminButton: Button
     private lateinit var leaveCommunityButton: Button
+    private lateinit var adapter: CommunityMembersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +74,10 @@ class MyCommunityFragment : Fragment() {
 
         binding.adminButton.setOnClickListener {
             findNavController().navigate(R.id.action_myCommunityFragment_to_adminFragment)
+        }
+
+        binding.leaveCommunityButton.setOnClickListener {
+            leaveCommunity()
         }
     }
 
@@ -128,7 +132,7 @@ class MyCommunityFragment : Fragment() {
             .show()
     }
 
-    private fun populateUI(memberData: List<Pair<String, String>>) {
+    private fun populateUI(memberData: List<Triple<String, String, Long>>) {
         binding.communityName.text = community.name
         binding.communityMunicipality.text = community.municipality
 
@@ -172,7 +176,11 @@ class MyCommunityFragment : Fragment() {
             .whereIn(FieldPath.documentId(), memberIds)  // Querying by document IDs
             .get()
             .addOnSuccessListener { documents ->
-                val memberData = documents.map { it.id to (it.getString("email") ?: "Unknown") }
+                val memberData = documents.map {
+                    val email = it.getString("email") ?: "Unknown"
+                    val points = it.getLong("points") ?: 0
+                    Triple(it.id, email, points)
+                }
                 populateUI(memberData)
             }
             .addOnFailureListener { e ->

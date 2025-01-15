@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.driesbruylandt.villageclean.R
 
 class CommunityMembersAdapter(
-    private val members: List<Pair<String, String>>,
+    private val members: List<Triple<String, String, Long>>,
     private val onMemberSelected: (String) -> Unit
 ) : RecyclerView.Adapter<CommunityMembersAdapter.MemberViewHolder>() {
 
@@ -22,8 +22,8 @@ class CommunityMembersAdapter(
     }
 
     override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
-        val (id, email) = members[position]
-        holder.bind(id, email, selectedMembers.contains(id))
+        val (id, email, points) = members[position]
+        holder.bind(id, email, points)
     }
 
     override fun getItemCount() = members.size
@@ -34,17 +34,12 @@ class CommunityMembersAdapter(
 
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val memberName: TextView = itemView.findViewById(R.id.memberName)
-        private val memberCheckBox: CheckBox = itemView.findViewById(R.id.memberCheckBox)
+        private val memberPoints: TextView = itemView.findViewById(R.id.memberPoints)
 
-        fun bind(id: String, email: String, isSelected: Boolean) {
+        fun bind(id: String, email: String, points: Long) {
             memberName.text = email
-            memberCheckBox.isChecked = isSelected
-            memberCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    selectedMembers.add(id)
-                } else {
-                    selectedMembers.remove(id)
-                }
+            memberPoints.text = "Points: $points"
+            itemView.setOnClickListener {
                 onMemberSelected(id)
             }
         }

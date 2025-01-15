@@ -63,31 +63,11 @@ class DashboardFragment : Fragment() {
         binding.joinCommunityButton.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_joinCommunityFragment)
         }
-    }
 
-//    private fun checkUserCommunity(userId: String) {
-//        val firestore = FirebaseFirestore.getInstance()
-//
-//        firestore.collection("users").document(userId).get()
-//            .addOnSuccessListener { document ->
-//                if (document != null && document.exists()) {
-//                    val community = document.getString("community")
-//                    if (community.isNullOrEmpty()) {
-//                        binding.emptyStateContainer.visibility = View.VISIBLE
-//                        binding.dashboardContainer.visibility = View.GONE
-//                    } else {
-//                        binding.emptyStateContainer.visibility = View.GONE
-//                        binding.dashboardContainer.visibility = View.VISIBLE
-//                    }
-//                } else {
-//                    Toast.makeText(context, "User data not found", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                e.printStackTrace()
-//                Toast.makeText(context, "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//    }
+        binding.profileButton.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment)
+        }
+    }
 
     private fun checkUserCommunity(userId: String) {
         val firestore = FirebaseFirestore.getInstance()

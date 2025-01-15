@@ -73,11 +73,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         map.uiSettings.isZoomControlsEnabled = true
         map.setOnPolygonClickListener { polygon ->
             val streetName = polygon.tag as String
-            val bundle = Bundle().apply {
-                putString("streetName", streetName)
-                putString("municipality", municipality)
-            }
-            findNavController().navigate(R.id.action_mapFragment_to_streetInfoFragment, bundle)
+            val action = MapFragmentDirections.actionMapFragmentToStreetInfoFragment(
+                streetName = streetName,
+                municipality = municipality
+            )
+            findNavController().navigate(action)
         }
     }
 

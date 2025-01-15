@@ -41,12 +41,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
-<!--        <action-->
-<!--            android:id="@+id/action_dashboard_to_profile"-->
-<!--            app:destination="@id/profileFragment" />-->
-<!--        <action-->
-<!--            android:id="@+id/action_dashboard_to_map"-->
-<!--            app:destination="@id/mapFragment" />-->
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -88,10 +85,18 @@
         <argument
             android:name="streetName"
             app:argType="string" />
+        <argument
+            android:name="municipality"
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/adminFragment"
         android:name="com.driesbruylandt.villageclean.ui.admin.AdminFragment"
         android:label="Admin" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.driesbruylandt.villageclean.ui.profile.ProfileFragment"
+        android:label="Profile" />
 </navigation>

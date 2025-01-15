@@ -35,7 +35,7 @@ class AddCommunityFragment : Fragment() {
 
     // Hardcoded list of Flemish municipalities
     private val flemishMunicipalities = listOf(
-        "Antwerp", "Ghent", "Bruges", "Leuven", "Hasselt", "Mechelen", "Kortrijk", "Sint-Niklaas", "Genk", "Turnhout"
+        "Antwerp", "Ghent", "Bruges", "Leuven", "Hasselt", "Mechelen", "Kortrijk", "Sint-Niklaas", "Genk", "Turnhout", "Melsbroek"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -14,6 +14,7 @@ import com.driesbruylandt.villageclean.R
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
@@ -31,23 +32,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class StreetInfoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private lateinit var streetName: String
-    private lateinit var municipality: String
+    private val args: StreetInfoFragmentArgs by navArgs()
 
     private val firestore = FirebaseFirestore.getInstance()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            streetName = it.getString("streetName") ?: ""
-            municipality = it.getString("municipality") ?: ""
-            Log.d("StreetInfoFragment", "Street name: $streetName, Municipality: $municipality")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,8 +63,8 @@ class StreetInfoFragment : Fragment() {
     }
 
     private fun fetchStreetInfo(streetInfoTextView: TextView, lastCleanedTextView: TextView) {
-        firestore.collection("municipalities").document(municipality)
-            .collection("streets").document(streetName).get()
+        firestore.collection("municipalities").document(args.municipality)
+            .collection("streets").document(args.streetName).get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
                     val streetInfo = document.getString("name") ?: "Street information not found"
@@ -110,8 +97,8 @@ class StreetInfoFragment : Fragment() {
                     val community = documents.first()
                     val admin = community.getString("admin") ?: ""
                     val cleaningRequest = hashMapOf(
-                        "streetName" to streetName,
-                        "municipality" to municipality,
+                        "streetName" to args.streetName,
+                        "municipality" to args.municipality,
                         "requestedAt" to currentDate,
                         "status" to "pending",
                         "adminId" to admin,
@@ -134,13 +121,6 @@ class StreetInfoFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance(streetName: String, municipality: String) =
-            StreetInfoFragment().apply {
-                arguments = Bundle().apply {
-                    putString("streetName", streetName)
-                    putString("municipality", municipality)
-                }
-            }
+        private const val TAG = "StreetInfoFragment"
     }
 }
